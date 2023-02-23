@@ -40,6 +40,8 @@ dependencies:
   webview_flutter: ^2.0.2
   flutter_windowmanager: ^0.2.0
   ios_insecure_screen_detector: ^0.0.2
+  # pinpad: ^0.2.0
+  pin_plus_keyboard: ^2.0.6
 
 dev_dependencies:
   flutter_test:

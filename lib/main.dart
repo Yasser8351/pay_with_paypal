@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:fib/reports_args.dart';
+import 'package:fib/splash_screen.dart';
+import 'package:fib/success_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_windowmanager/flutter_windowmanager.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
 // import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,82 +28,12 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home:  PaymentScreen(),
+      home: SplashScreen(),
     );
   }
 }
 
 
-
-
-/*
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-
-
-  bool           isLoading =false;
-
-
-    Future<void> secureScreen() async {
-    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE); 
-  }
-  
-  @override
-  void initState() {
-    secureScreen();
-    super.initState();
-  }
-
-  
-   var controller = WebViewController()
-  ..setJavaScriptMode(JavaScriptMode.unrestricted)
-  ..setBackgroundColor(const Color(0x00000000))
-
-
-  ..setNavigationDelegate(
-    NavigationDelegate(
-      onProgress: (int progress) {
-        log(progress.toString());
-        // Update loading bar.
-      },
-      onPageStarted: (String url) {
-
-      
-       
-      },
-      onPageFinished: (String url) {},
-      onWebResourceError: (WebResourceError error) {},
-      onNavigationRequest: (NavigationRequest request) {
-        if (request.url.startsWith('https://www.youtube.com/')) {
-          return NavigationDecision.prevent;
-        }
-        return NavigationDecision.navigate;
-      },
-    ),
-  )
-  // ..loadRequest(Uri.parse('https://www.fib-sd.com'));
-    ..loadRequest(Uri.parse('https://flutter.dev'));
-
-  @override
-  Widget build(BuildContext context) {
-  
-    return Scaffold(
-     appBar: AppBar(title: const Text('FIB Demo')),
-    body: WebViewWidget(controller: controller,
-    ),
-    );
-  }
-}
-
-
-*/
 
 
 class PaymentScreen extends StatefulWidget {
@@ -121,17 +53,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
   late WebViewController controllerGlobal;
   final  orderModel= "";
 
-
+Future<void> secureScreen() async {
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE); 
+  }
   @override
   void initState() {
     super.initState();
-    // selectedUrl = '${AppConstants.BASE_URL}/payment-mobile?customer_id=${widget.orderModel.userId}&order_id=${widget.orderModel.id}';
-    selectedUrl="https://flutter.dev";
-    // selectedUrl="https://www.fib-sd.com";
+        secureScreen();
 
-  
-   // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
-  }
+
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -164,14 +95,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     //_controller.future.catchError(onError)
                   },
                   onProgress: (int progress) {
-                    print("WebView is loading (progress : $progress%)");
+                    log("WebView is loading (progress : $progress%)");
                   },
                   onPageStarted: (String url) {
-                    print('Page started loading: $url');
+                    log('Page started loading: $url');
                     setState(() {
                       _isLoading = true;
                     });
-                    print("printing urls "+url.toString());
+                    log("printing urls "+url.toString());
                     _redirect(url);
 
                   },
@@ -196,16 +127,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _redirect(String url) {
-   String BASE_URL = "";
-    print("redirect");
+  //  String BASE_URL = "";
+    log(" start redirect");
     if(_canRedirect) {
-      bool _isSuccess = url.contains('success') && url.contains(BASE_URL);
-      bool _isFailed = url.contains('fail') && url.contains(BASE_URL);
-      bool _isCancel = url.contains('apps') && url.contains(BASE_URL);
+      bool _isSuccess = url.contains('https://docs.flutter.dev/get-started/install') && url.contains(url);
+      bool _isFailed = url.contains('fail') && url.contains(url);
+      bool _isCancel = url.contains('apps') && url.contains(url);
       if (_isSuccess || _isFailed || _isCancel) {
         _canRedirect = false;
       }
       if (_isSuccess) {
+
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuccessScreen(),));
+
+
+                        log("_isSuccess");
+
 
 
         // Get.offNamed(RouteHelper.getOrderSuccessRoute(widget.orderModel.id.toString(), 'success'));
