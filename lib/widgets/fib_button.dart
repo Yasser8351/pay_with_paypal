@@ -32,7 +32,7 @@ class MyButton extends StatelessWidget {
       this.leadingIcon,
       this.color})
       : _buttonType = _ButtonType.outlined,
-        this.iconIsImage = false,
+        iconIsImage = false,
         super(key: key);
   const MyButton.text(
       {Key? key,
@@ -44,7 +44,7 @@ class MyButton extends StatelessWidget {
       this.leadingIcon,
       this.color})
       : _buttonType = _ButtonType.text,
-        this.iconIsImage = false,
+        iconIsImage = false,
         super(key: key);
 
   @override
@@ -84,10 +84,12 @@ class MyButton extends StatelessWidget {
                   color: getTextColor(context),
                 ),
               if (leadingIcon != null && !busy) horizontalSpaceTiny,
-              if (!busy) Text(text, 
-              style: TextStyle(color: Colors.white),
-              // color: getTextColor(context)
-              ),
+              if (!busy)
+                Text(
+                  text,
+                  style: const TextStyle(color: Colors.white),
+                  // color: getTextColor(context)
+                ),
               if (busy)
                 SizedBox(
                   height: 24.0,
@@ -121,15 +123,11 @@ class MyButton extends StatelessWidget {
 
 enum _ButtonType { filled, outlined, text }
 
-
 const Color kcPrimary = Color(0xff253D79);
 //253D79
 const Color kcGreyDark = Color(0xff868686);
 
-
 const Color kcGreyLight = Color(0xffe5e5e5);
 const Color kcGreyVeryLight = Color(0xFFF5F5F5);
 
-final Widget horizontalSpaceTiny = SizedBox(width: 4.0);
-
-
+const Widget horizontalSpaceTiny = SizedBox(width: 4.0);

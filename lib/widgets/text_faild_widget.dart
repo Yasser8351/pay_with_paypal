@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class TextFaildWidget extends StatelessWidget {
@@ -14,7 +13,7 @@ class TextFaildWidget extends StatelessWidget {
     this.isSuffixIcon = false,
     this.borderRadius = 20,
     this.suffixIconSize = 24,
-    this.maxLength=null,
+    this.maxLength,
     this.prefixIcon = Icons.person,
     this.suffixIcon = Icons.person,
     this.inputType = TextInputType.text,
@@ -33,9 +32,7 @@ class TextFaildWidget extends StatelessWidget {
   final IconData suffixIcon;
   final IconData prefixIcon;
   final int maxLines;
-    final int? maxLength;
-
-  
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +46,17 @@ class TextFaildWidget extends StatelessWidget {
           // filled: true,
           // fillColor: kcGreyVeryLight,
           focusColor: Colors.red,
-          prefixIcon: isPrefixIcon
-              ? Icon(prefixIcon)
-              : const SizedBox(),
+          prefixIcon: isPrefixIcon ? Icon(prefixIcon) : const SizedBox(),
           suffixIcon: isSuffixIcon
-              ? Icon(suffixIcon,  size: suffixIconSize)
+              ? Icon(suffixIcon, size: suffixIconSize)
               : const SizedBox(),
           labelText: label,
           hintText: hint,
-          hintStyle:  const TextStyle(
-        color: Colors.black,
-        fontWeight: FontWeight.normal,
-        fontSize: 17,
-      ),
+          hintStyle: const TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.normal,
+            fontSize: 17,
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           )),

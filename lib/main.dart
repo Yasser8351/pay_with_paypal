@@ -1,12 +1,5 @@
-import 'dart:async';
-import 'dart:developer';
-
-import 'package:fib/reports_args.dart';
-import 'package:fib/splash_screen.dart';
-import 'package:fib/success_screen.dart';
+import 'package:fib/screen/splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_windowmanager/flutter_windowmanager.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 // Import for Android features.
 // import 'package:webview_flutter_android/webview_flutter_android.dart';
 // Import for iOS features.
@@ -15,12 +8,8 @@ void main() {
   runApp(const MyApp());
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-
 
   // This widget is the root of your application.
   @override
@@ -32,13 +21,11 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
+/*
 
 class PaymentScreen extends StatefulWidget {
- const PaymentScreen();
- //required this.orderModel
+  const PaymentScreen({super.key});
+  //required this.orderModel
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
@@ -49,20 +36,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
   double value = 0.0;
   bool _canRedirect = true;
   bool _isLoading = true;
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
+  final Completer<WebViewController> _controller =
+      Completer<WebViewController>();
   late WebViewController controllerGlobal;
-  final  orderModel= "";
+  final orderModel = "";
 
-Future<void> secureScreen() async {
-    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE); 
+  Future<void> secureScreen() async {
+    await FlutterWindowManager.addFlags(FlutterWindowManager.FLAG_SECURE);
   }
+
   @override
   void initState() {
     super.initState();
-        secureScreen();
-
-
-    }
+    secureScreen();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +58,15 @@ Future<void> secureScreen() async {
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text("Payment"),
+          title: const Text("Payment"),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed:()=> _exitApp(context),
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () => _exitApp(context),
           ),
           backgroundColor: Colors.green,
         ),
         body: Center(
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Stack(
               children: [
@@ -87,10 +74,11 @@ Future<void> secureScreen() async {
                   javascriptMode: JavascriptMode.unrestricted,
                   initialUrl: selectedUrl,
                   gestureNavigationEnabled: true,
-
-                  userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E233 Safari/601.1',
+                  userAgent:
+                      'Mozilla/5.0 (iPhone; CPU iPhone OS 9_3 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13E233 Safari/601.1',
                   onWebViewCreated: (WebViewController webViewController) {
-                    _controller.future.then((value) => controllerGlobal = value);
+                    _controller.future
+                        .then((value) => controllerGlobal = value);
                     _controller.complete(webViewController);
                     //_controller.future.catchError(onError)
                   },
@@ -102,9 +90,8 @@ Future<void> secureScreen() async {
                     setState(() {
                       _isLoading = true;
                     });
-                    log("printing urls "+url.toString());
+                    log("printing urls $url");
                     _redirect(url);
-
                   },
                   onPageFinished: (String url) {
                     print('Page finished loading: $url');
@@ -112,12 +99,15 @@ Future<void> secureScreen() async {
                       _isLoading = false;
                     });
                     _redirect(url);
-
                   },
                 ),
-                _isLoading ? Center(
-                  child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor)),
-                ) : SizedBox.shrink(),
+                _isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Theme.of(context).primaryColor)),
+                      )
+                    : const SizedBox.shrink(),
               ],
             ),
           ),
@@ -127,30 +117,30 @@ Future<void> secureScreen() async {
   }
 
   void _redirect(String url) {
-  //  String BASE_URL = "";
+    //  String BASE_URL = "";
     log(" start redirect");
-    if(_canRedirect) {
-      bool _isSuccess = url.contains('https://docs.flutter.dev/get-started/install') && url.contains(url);
-      bool _isFailed = url.contains('fail') && url.contains(url);
-      bool _isCancel = url.contains('apps') && url.contains(url);
-      if (_isSuccess || _isFailed || _isCancel) {
+    if (_canRedirect) {
+      bool isSuccess =
+          url.contains('https://docs.flutter.dev/get-started/install') &&
+              url.contains(url);
+      bool isFailed = url.contains('fail') && url.contains(url);
+      bool isCancel = url.contains('apps') && url.contains(url);
+      if (isSuccess || isFailed || isCancel) {
         _canRedirect = false;
       }
-      if (_isSuccess) {
+      if (isSuccess) {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => const SuccessScreen(),
+        ));
 
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => SuccessScreen(),));
-
-
-                        log("_isSuccess");
-
-
+        log("_isSuccess");
 
         // Get.offNamed(RouteHelper.getOrderSuccessRoute(widget.orderModel.id.toString(), 'success'));
-      } else if (_isFailed || _isCancel) {
-                log("_isCancel");
+      } else if (isFailed || isCancel) {
+        log("_isCancel");
 
         // Get.offNamed(RouteHelper.getOrderSuccessRoute(widget.orderModel.id.toString(), 'fail'));
-      }else{
+      } else {
         log("Encountered problem");
       }
     }
@@ -163,8 +153,8 @@ Future<void> secureScreen() async {
     } else {
       print("app exited");
       return true;
-     // return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString()));
+      // return Get.dialog(PaymentFailedDialog(orderID: widget.orderModel.id.toString()));
     }
   }
-
 }
+*/
